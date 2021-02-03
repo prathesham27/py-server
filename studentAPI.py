@@ -33,14 +33,28 @@ def studentCreate():
     print("DOB is=" + DOB)
     print("Parent Name is=" + parentName)
     print("Blood Group is=" + bloodGroup)
+
     mycursor = mydb.cursor()
-    sql = "INSERT INTO studenttable (RegNo,StudentName,DOB,ParentName,BloodGroup) VALUES (%s,%s,%s,%s,%s)"
-    val = (regNo, studentName, DOB, parentName, bloodGroup)
-    mycursor.execute(sql, val)
-    mydb.commit()
-    return {
+    sql = "SELECT * from studenttable WHERE RegNo = " + regNo + ""
+    print(sql)
+    mycursor.execute(sql)
+    myresult = mycursor.fetchall()
+    print(mycursor.rowcount)
+    if mycursor.rowcount == 0:
+        print("notfound")
+        sql = "INSERT INTO studenttable (RegNo,StudentName,DOB,ParentName,BloodGroup) VALUES (%s,%s,%s,%s,%s)"
+        val = (regNo, studentName, DOB, parentName, bloodGroup)
+        mycursor.execute(sql, val)
+        mydb.commit()
+        return {
         "success": True
-    }
+        }
+    else:
+        print("found")
+        return {
+            "success": False,
+            "message": "Student is already registered with Same Reg Number"
+        }
 
 @app.route('/student/update', methods=['POST'])
 def studentUpdate():
