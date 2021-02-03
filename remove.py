@@ -1,5 +1,8 @@
 array = []
 array.extend([1, 2, 3, 4, 5])
 print(array)
-array.pop(4)
+x=array.index(5)
+print(x)
+array.pop(x)
 print(array)
+
